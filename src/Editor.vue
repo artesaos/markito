@@ -1,10 +1,10 @@
 <template lang="jade">
-  h2 Write some markdown:
-  textarea(v-model="editor", cols="100", rows="30")
-  br
-  h3 And get fresh html:
-  #rendered
-    | {{{ editor | markdown }}} 
+  div#Editor
+    textarea(v-model="editor")
+
+  div#Preview
+    #rendered
+      | {{{ editor | markdown }}}
 </template>
 
 <script>
@@ -17,4 +17,4 @@ export default {
 }
 </script>
 
-<style></style>
+<style src="src/sass/app.scss" lang="scss"></style>
