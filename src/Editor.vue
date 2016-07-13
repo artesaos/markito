@@ -1,6 +1,6 @@
 <template lang="jade">
   div#Editor
-    textarea(v-model="editor")
+    textarea(v-model="editor", @keyup="save | debounce 200")
 
   div#Preview
     #rendered
@@ -8,10 +8,22 @@
 </template>
 
 <script>
+import ls from 'src/utils/localStorage'
+
 export default {
   data () {
     return {
       editor: ''
+    }
+  },
+  ready () {
+    if (ls.has('markdown-text')) {
+      this.editor = ls.get('markdown-text')
+    }
+  },
+  methods: {
+    save () {
+      ls.set('markdown-text', this.editor)
     }
   }
 }
