@@ -1,6 +1,6 @@
 <template lang="jade">
   div#Editor
-    textarea(v-model="editor", @keyup="save | debounce 200")
+    codemirror-editor(:code="editor")
 
   div#Preview
     #rendered
@@ -8,22 +8,23 @@
 </template>
 
 <script>
-import ls from 'src/utils/localStorage'
+import ls from './utils/localStorage'
+import CodemirrorEditor from './components/CodemirrorEditor'
 
 export default {
   data () {
     return {
-      editor: ''
+      editor: ls.get('markdown-text') || ''
     }
   },
-  ready () {
-    if (ls.has('markdown-text')) {
-      this.editor = ls.get('markdown-text')
-    }
+  components: {
+    CodemirrorEditor
   },
-  methods: {
-    save () {
-      ls.set('markdown-text', this.editor)
+  events: {
+    // This will be changed to vuex later
+    code (code) {
+      this.editor = code
+      ls.set('markdown-text', code)
     }
   }
 }
