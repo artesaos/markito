@@ -1,5 +1,5 @@
 <template lang="jade">
-    textarea#codemirror-editor(v-model="code")
+    textarea#codemirror-editor
 </template>
 
 <script>
@@ -9,21 +9,30 @@
 
     import 'codemirror/lib/codemirror.js'
     import 'codemirror/lib/codemirror.css'
+
+    // Codemirror language mode
+    import 'codemirror/mode/markdown/markdown'
+
+    // Codemirror Theme
+    import 'codemirror/theme/material.css'
     
     export default {
       props: ['code'],
       ready () {
-        CodeMirror(document.getElementById('codemirror-editor'), {
+        var vm = this
+        var cm = CodeMirror.fromTextArea(document.getElementById('codemirror-editor'), {
           mode: 'markdown',
           highlightFormatting: true,
-          lineNumbers: true
+          lineNumbers: true,
+          theme: 'material'
         })
-      },
-      watch: {
-        code (value) {
-          // This will be changed to vuex later
-          this.$dispatch('code', value)
-        }
+
+        cm.setValue(vm.code)
+
+        cm.on('change', function () {
+          vm.code = cm.getValue()
+          vm.$dispatch('code', cm.getValue())
+        })
       }
     }
 </script>
