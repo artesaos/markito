@@ -13,14 +13,10 @@ import ls from 'src/utils/localStorage'
 export default {
   data () {
     return {
-      editor: ''
+      editor: ls.get('markdown-text') || ''
     }
   },
-  ready () {
-    if (ls.has('markdown-text')) {
-      this.editor = ls.get('markdown-text')
-    }
-  },
+  ready () {},
   methods: {
     save () {
       ls.set('markdown-text', this.editor)
